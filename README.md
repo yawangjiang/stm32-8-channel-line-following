@@ -1,46 +1,45 @@
 # stm32 八路光电管寻路
 
-基于 STM32F103C8 的双电机智能车循迹项目。车辆通过八路光电传感器获取赛道偏差，主循环计算当前偏差并调整左右电机速度；工程同时保留 MPU6050、OLED、按键和电机驱动相关模块。
+基于 STM32F103C8 和八路光电传感器的智能车循迹项目。项目按 **代码、机械、PCB** 三部分整理，分别维护固件、支架模型和电路设计。
 
-![智能车与八路光电传感器实物](docs/images/prototype.jpg)
+## 三部分导航
 
-## 仓库内容
+| 部分 | 内容 | 主要文件 | 打开方式 |
+| --- | --- | --- | --- |
+| [代码](代码/) | STM32 源码、驱动和 Keil 工程 | [Project.uvprojx](代码/Project.uvprojx) | Keil MDK / µVision |
+| [机械](机械/) | 支架零件模型、实物装配照片 | [支架.SLDPRT](机械/支架.SLDPRT) | SolidWorks |
+| [PCB](PCB/) | 原理图与 PCB 设计工程 | [stm32 8路光电管寻路.eprj2](PCB/stm32%208路光电管寻路.eprj2) | 立创 EDA 专业版 |
+
+## 目录结构
 
 ```text
 stm32-8-channel-line-following/
-├── firmware/keil/                 # STM32 固件与 Keil MDK 工程
-│   ├── Hardware/                  # 传感器、电机、OLED、MPU6050 等驱动
-│   ├── Library/                   # STM32F10x 标准外设库
-│   ├── Start/                     # 启动文件与 CMSIS 文件
-│   ├── System/                    # 延时等系统模块
-│   ├── User/                      # 主程序与中断配置
-│   └── Project.uvprojx            # Keil 工程入口
-├── hardware/electronics/
-│   └── stm32 8路光电管寻路.eprj2  # 立创 EDA 专业版原理图/PCB 工程
-├── hardware/mechanical/
-│   └── 支架.SLDPRT                # SolidWorks 支架模型
-└── docs/images/prototype.jpg       # 实物照片
+├── 代码/
+│   ├── README.md
+│   ├── Project.uvprojx       # Keil 工程入口
+│   ├── Project.uvoptx        # Keil 工程选项
+│   ├── User/                # 主程序、中断和外设配置
+│   ├── Hardware/            # 循迹、电机、MPU6050、OLED 等驱动
+│   ├── Library/             # STM32F10x 标准外设库
+│   ├── Start/               # 启动文件和 CMSIS
+│   └── System/              # 延时等系统模块
+├── 机械/
+│   ├── README.md
+│   ├── 支架.SLDPRT
+│   └── 实物照片.jpg
+├── PCB/
+│   ├── README.md
+│   └── stm32 8路光电管寻路.eprj2
+├── .gitignore
+└── README.md
 ```
 
-## 固件环境
+## 使用说明
 
-- MCU：STM32F103C8（ARM Cortex-M3）
-- IDE：Keil MDK / µVision
-- 外设库：STM32F10x Standard Peripheral Library
-- 主要模块：八路光电循迹、电机 PWM 控制、MPU6050、OLED、按键
+- **编译固件**：打开 [代码/Project.uvprojx](代码/Project.uvprojx)，选择 `Target 1`，确认 STM32F103C8 的设备支持包和下载器设置后编译、烧录。详细说明见 [代码说明](代码/README.md)。
+- **查看机械结构**：使用 SolidWorks 打开 [支架模型](机械/支架.SLDPRT)。说明和照片见 [机械说明](机械/README.md)。
+- **查看电路设计**：使用立创 EDA 专业版打开 [原理图/PCB 工程](PCB/stm32%208路光电管寻路.eprj2)。详细说明见 [PCB 说明](PCB/README.md)。
 
-## 编译和烧录
+## 实物参考
 
-1. 使用 Keil µVision 打开 `firmware/keil/Project.uvprojx`。
-2. 确认已安装 STM32F1 对应的 Device Pack。
-3. 选择 `Target 1`，执行 Build。
-4. 按实际调试器和开发板设置下载算法，然后烧录到 STM32F103C8。
-
-编译生成的 `Objects/`、`Listings/`、`DebugConfig/` 以及个人 `Project.uvguix.*` 文件已排除，不进入版本控制。
-
-## 硬件文件
-
-- `hardware/electronics/*.eprj2`：使用立创 EDA 专业版打开，用于查看和修改原理图、PCB。
-- `hardware/mechanical/*.SLDPRT`：使用 SolidWorks 打开，用于查看和修改传感器/车体支架。
-
-引脚分配和接线应以 EDA 工程及 `firmware/keil/Hardware/` 下的驱动代码为准。
+![智能车与八路光电传感器实物](机械/实物照片.jpg)
